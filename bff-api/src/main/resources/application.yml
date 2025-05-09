@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: bff-api
+  cloud:
+    gateway:
+      routes:
+        - id: bff-servlet
+          uri: http://${RESOURCE_SERVER_SERVLET_HOST:localhost}:8081
+          predicates:
+            - Path=/api/servlet/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            - TokenRelay=
+            - SaveSession
+            - StripPrefix=2
+        - id: bff-reactive
+          uri: http://${RESOURCE_SERVER_REACTIVE_HOST:localhost}:8082
+          predicates:
+            - Path=/api/reactive/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+            - TokenRelay=
+            - SaveSession
+            - StripPrefix=2
+
+  security:
+    oauth2:
+      client:
+        provider:
+          bff-realm:
+            issuer-uri: http://host.docker.internal:888/auth/realms/bff-realm
+        registration:
+          bff-realm:
+            provider: bff-realm
+            authorization-grant-type: authorization_code
+            client-id: ${KEYCLOAK_ID:bff-realm-confidential}
+            client-secret: ${KEYCLOAK_SECRET:8o8UMAOpFVSXelnEf6F2qiLZlXCnV90x}
+            scope: openid, profile, email
+            redirect-uri: http://host.docker.internal:888/bff/login/oauth2/code/{registrationId}
+      resourceserver:
+        jwt:
+          issuer-uri: http://host.docker.internal:888/auth/realms/bff-realm
+
+logging:
+  level:
+    org.springframework.security: debug
+    org.springframework.cloud.gateway: debug
+
+server:
+  forward-headers-strategy: framework

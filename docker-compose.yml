@@ -1,0 +1,118 @@
+services:
+  bff-api:
+    container_name: bff-api-container
+    build: ./bff-api
+    ports:
+      - "8080:8080"
+      - "5006:5005"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    environment:
+      JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+      RESOURCE_SERVER_SERVLET_HOST: servlet-resource-server
+      RESOURCE_SERVER_REACTIVE_HOST: reactive-resource-server
+      KEYCLOAK_ID: bff-realm-confidential
+      KEYCLOAK_SECRET: 8o8UMAOpFVSXelnEf6F2qiLZlXCnV90x
+
+  frontend:
+    container_name: bff-api-frontend
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - bff-frontend-volume:/var/lib/frontend
+
+  servlet-resource-server:
+    container_name: servlet-resource-server-container
+    build: ./servlet-resource-server-api
+    ports:
+      - "8081:8081"
+      - "5005:5005"
+    environment:
+      JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+
+  reactive-resource-server:
+    container_name: reactive-resource-server-container
+    build: ./reactive-resource-server
+    ports:
+      - "8082:8082"
+      - "5007:5005"
+    environment:
+      JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+      REACTIVE_DATABASE_URL: mysql-base:3306
+
+  nginx:
+    container_name: nginx-container
+    build: ./nginx
+    ports:
+      - "888:888"
+    volumes:
+      - bff-nginx-volume:/var/lib/nginx
+    depends_on:
+      bff-api:
+        condition: service_started
+      servlet-resource-server:
+        condition: service_started
+      reactive-resource-server:
+        condition: service_started
+    restart: always
+
+  mysql-base:
+    container_name: bff-database-mysql-container
+    image: mysql:latest
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$MYSQL_ROOT_PASSWORD", "-s"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - bff-mysql-volume:/var/lib/mysql
+
+  keycloak:
+    container_name: bff-keycloak-container
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://mysql-base:3306/keycloak
+      KC_DB_USERNAME: root
+      KC_DB_PASSWORD: root
+      KC_HEALTH_ENABLED: true
+      KC_METRICS_ENABLED: true
+      KC_HTTP_PORT: 8090
+      KC_HOSTNAME_URL: http://host.docker.internal:888/auth
+      KC_HOSTNAME_ADMIN_URL: http://host.docker.internal:888/auth
+      KC_HTTP_RELATIVE_PATH: /auth/
+    ports:
+      - "8090:8090"
+      - "9000:9000"
+    depends_on:
+      mysql-base:
+        condition: service_healthy
+    command:
+      - start-dev
+    healthcheck:
+      test: ['CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "
+      public class HealthCheck { 
+        public static void main(String[] args) throws Throwable { 
+          System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() ? 0 : 1); 
+        } 
+      }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:9000/auth/health/ready']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - bff-keycloak-volume:/var/lib/keycloak
+
+volumes:
+  bff-mysql-volume:
+  bff-keycloak-volume:
+  bff-nginx-volume:
+  bff-frontend-volume:

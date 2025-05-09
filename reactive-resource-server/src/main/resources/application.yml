@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: reactive-resource-server
+
+  r2dbc:
+    password: root
+    username: root
+    url: r2dbc:mysql://${REACTIVE_DATABASE_URL:localhost:3307}/reactivedb
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://host.docker.internal:888/auth/realms/bff-realm
+
+logging:
+  level:
+    org.springframework.security: debug
+    org.springframework.r2dbc: debug
+
+server:
+  port: 8082

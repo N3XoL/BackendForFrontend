@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: servlet-resource-server-api
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://host.docker.internal:888/auth/realms/bff-realm
+
+logging:
+  level:
+    org.springframework.security: debug
+
+server:
+  port: 8081
