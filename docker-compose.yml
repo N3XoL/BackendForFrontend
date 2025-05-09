@@ -1,7 +1,7 @@
 services:
   bff-api:
     container_name: bff-api-container
-    build: ./bff-api
+    build: ./bff-apis
     ports:
       - "8080:8080"
       - "5006:5005"
