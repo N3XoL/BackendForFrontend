@@ -29,7 +29,8 @@ export default function HomePage() {
             <div className="flex flex-col items-center justify-between p-24">
                 <div className="flex gap-4">
                     <Link to="/about">About</Link>
-                    <a href="/bff/api/servlet/me">Test</a>
+                    <span>|</span>
+                    <a href="/bff/api/servlet/me">Secured Resource</a>
                 </div>
                 <div className="mt-6"></div>
                 <div>{message}</div>

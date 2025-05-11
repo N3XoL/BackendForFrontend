@@ -55,8 +55,9 @@ export default function Login({onLogin}: LoginProperties) {
 
     const onIframeLoad = useCallback(() => {
         if (isLoginModalDisplayed) {
+            onLogin({})
         }
-    }, [isLoginModalDisplayed]);
+    }, [onLogin, isLoginModalDisplayed]);
 
     useEffect(() => {
         const iframe = iframeRef.current;
