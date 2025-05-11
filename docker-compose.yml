@@ -9,6 +9,7 @@ services:
       keycloak:
         condition: service_healthy
     environment:
+      HOSTNAME: host.docker.internal
       JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
       RESOURCE_SERVER_SERVLET_HOST: servlet-resource-server
       RESOURCE_SERVER_REACTIVE_HOST: reactive-resource-server

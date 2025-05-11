@@ -1,3 +1,10 @@
+schema: http
+hostname: localhost
+proxy-port: 888
+authorization-prefix: /auth
+proxy-uri: ${schema}://${hostname}:${proxy-port}
+issuer: ${proxy-uri}${authorization-prefix}/realms/bff-realm
+
 spring:
   application:
     name: bff-api
@@ -28,7 +35,7 @@ spring:
       client:
         provider:
           bff-realm:
-            issuer-uri: http://host.docker.internal:888/auth/realms/bff-realm
+            issuer-uri: ${issuer}
         registration:
           bff-realm:
             provider: bff-realm
@@ -36,10 +43,10 @@ spring:
             client-id: ${KEYCLOAK_ID:bff-realm-confidential}
             client-secret: ${KEYCLOAK_SECRET:8o8UMAOpFVSXelnEf6F2qiLZlXCnV90x}
             scope: openid, profile, email
-            redirect-uri: http://host.docker.internal:888/bff/login/oauth2/code/{registrationId}
+            redirect-uri: ${proxy-uri}/bff/login/oauth2/code/{registrationId}
       resourceserver:
         jwt:
-          issuer-uri: http://host.docker.internal:888/auth/realms/bff-realm
+          issuer-uri: ${issuer}
 
 logging:
   level:

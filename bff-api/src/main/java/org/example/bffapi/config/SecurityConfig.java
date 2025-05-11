@@ -45,7 +45,9 @@ public class SecurityConfig {
                         .csrfTokenRequestHandler(new ServerCsrfTokenRequestAttributeHandler()))
                 .logout(logoutSpec -> logoutSpec
                         .logoutSuccessHandler(oidcLogoutSpec()))
-                .oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler("http://host.docker.internal:888/react-ui")))
+                .oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec.authenticationSuccessHandler(
+                        new RedirectServerAuthenticationSuccessHandler("http://host.docker.internal:888/react-ui")
+                ))
                 .oidcLogout(oidcLogoutSpec ->
                         oidcLogoutSpec.backChannel(backChannelLogoutConfigurer -> backChannelLogoutConfigurer
                                 .logoutUri("{baseUrl}/bff/logout/connect/back-channel/{registrationId}")));
@@ -71,10 +73,8 @@ public class SecurityConfig {
 
     private ServerLogoutSuccessHandler oidcLogoutSpec() {
         OidcClientInitiatedServerLogoutSuccessHandler handler = new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository);
-        handler.setPostLogoutRedirectUri("http://host.docker.internal:888/react-ui");
+        handler.setPostLogoutRedirectUri("{baseUrl}/react-ui");
         return (exchange, authentication) -> handler.onLogoutSuccess(exchange, authentication)
-                .then(Mono.fromRunnable(() -> {
-                    exchange.getExchange().getResponse().setStatusCode(HttpStatus.CREATED);
-                }));
+                .then(Mono.fromRunnable(() -> exchange.getExchange().getResponse().setStatusCode(HttpStatus.CREATED)));
     }
 }

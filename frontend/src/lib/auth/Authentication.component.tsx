@@ -5,19 +5,16 @@ import Login from "./Login.tsx";
 
 
 interface AuthenticationProperties {
-    onLogin: EventHandler<never>;
+    onLogin: EventHandler<any>;
 }
 
-export default function Authentication({ onLogin }: AuthenticationProperties) {
+export default function Authentication({onLogin}: AuthenticationProperties) {
     const user = useUserContext();
-
     return (
         <span>
-      {!user.isAuthenticated ? (
-          <Login onLogin={onLogin}></Login>
-      ) : (
-          <Logout></Logout>
-      )}
-    </span>
+            {!user.isAuthenticated ?
+                (<Login onLogin={onLogin}></Login>) :
+                (<Logout></Logout>)}
+        </span>
     );
 }
