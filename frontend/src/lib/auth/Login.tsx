@@ -1,6 +1,6 @@
 import axios from "axios";
 import type {FormEvent} from "react";
-import {type EventHandler, useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {useUserContext} from "../../user-context.ts";
 
 const LoginExperience = {
@@ -21,7 +21,7 @@ async function getLoginOptions(): Promise<Array<LoginOptionDto>> {
 }
 
 interface LoginProperties {
-    onLogin: EventHandler<any>;
+    onLogin: (eventData: Record<string, never>) => void;
 }
 
 export default function Login({onLogin}: LoginProperties) {
@@ -55,7 +55,7 @@ export default function Login({onLogin}: LoginProperties) {
 
     const onIframeLoad = useCallback(() => {
         if (isLoginModalDisplayed) {
-            onLogin({})
+            onLogin({});
         }
     }, [onLogin, isLoginModalDisplayed]);
 

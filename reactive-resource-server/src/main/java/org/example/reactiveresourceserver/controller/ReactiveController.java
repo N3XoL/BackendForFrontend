@@ -6,6 +6,7 @@ import org.example.reactiveresourceserver.model.SomeEntity;
 import org.example.reactiveresourceserver.repository.SomeEntityRepository;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,7 @@ public class ReactiveController {
     private final AtomicLong counter = new AtomicLong();
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<SomeEntity> create(@RequestBody SomeEntity someEntity) {
         return someEntityRepository.save(someEntity)
                 .doOnSuccess(entity -> someEntitySink.tryEmitNext(someEntity));

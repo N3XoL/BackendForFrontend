@@ -15,7 +15,6 @@ import java.util.Arrays;
 public class ResourceServerController {
 
     @GetMapping("/me")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserInfoDto> me(JwtAuthenticationToken authentication) {
         var jwt = (Jwt) authentication.getPrincipal();
         var claims = jwt.getClaims();

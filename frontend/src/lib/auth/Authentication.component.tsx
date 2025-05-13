@@ -1,11 +1,10 @@
-import type {EventHandler} from "react";
 import Logout from "./Logout.tsx";
 import {useUserContext} from "../../user-context.ts";
 import Login from "./Login.tsx";
 
 
 interface AuthenticationProperties {
-    onLogin: EventHandler<any>;
+    onLogin: (eventData: Record<string, never>) => void;
 }
 
 export default function Authentication({onLogin}: AuthenticationProperties) {

@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 
 @SpringBootApplication
-@EnableMethodSecurity
 public class ResourceServerApiApplication {
 
 	public static void main(String[] args) {

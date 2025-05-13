@@ -25,6 +25,15 @@ export class User {
     get isAuthenticated(): boolean {
         return !!this.name;
     }
+
+     isAdmin(): boolean {
+        for (const role of this.roles) {
+            if (role === 'ROLE_ADMIN') {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 export class UserService {
