@@ -2,7 +2,6 @@ package org.example.resourceserverapi.controller;
 
 import org.example.resourceserverapi.model.UserInfoDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;

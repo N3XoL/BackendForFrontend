@@ -1,6 +1,5 @@
 package org.example.reactiveresourceserver.config;
 
-import lombok.NonNull;
 import org.example.reactiveresourceserver.converter.JwtConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,16 +12,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
-import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.savedrequest.NoOpServerRequestCache;
-import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.session.WebSessionManager;
 import reactor.core.publisher.Mono;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 @EnableWebFluxSecurity
