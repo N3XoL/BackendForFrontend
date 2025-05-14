@@ -3,6 +3,12 @@ import {Link} from "react-router-dom";
 import {type FormEvent, useState} from "react";
 import axios from "axios";
 
+interface EntityDto {
+    id: number;
+    entityKey: string;
+    entityValue: string;
+}
+
 export default function HomePage() {
     const currentUser = useUserContext();
     const [responseMessage, setResponseMessage] = useState("");
@@ -12,7 +18,7 @@ export default function HomePage() {
         event.preventDefault();
         setResponseMessage("Submitting...");
         try {
-            const response = await axios.post("/bff/api/reactive/create", {entityKey, entityValue});
+            const response = await axios.post<EntityDto>("/bff/api/reactive/create", {entityKey, entityValue});
             setResponseMessage(`Entity created successfully! ID=${response.data.id}`);
             setEntityKey("");
             setEntityValue("");

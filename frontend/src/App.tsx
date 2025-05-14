@@ -1,7 +1,6 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import HomePage from "./lib/home/HomePage.tsx";
 import About from "./about/About.tsx";
-import LoginError from "./login-error/LoginError.tsx";
 import './App.css';
 import {UserContext} from "./user-context.ts";
 import {useState} from "react";
@@ -27,7 +26,6 @@ export default function App() {
                     <Routes>
                         <Route path="/" element={<HomePage/>}/>
                         <Route path="/about" element={<About/>}/>
-                        <Route path="/login-error" element={<LoginError/>}/>
                     </Routes>
                 </div>
             </BrowserRouter>
