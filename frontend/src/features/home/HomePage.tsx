@@ -1,4 +1,4 @@
-import {useUserContext} from "../../user-context.ts";
+import {useUserContext} from "@/store/user-context.ts";
 import {Link} from "react-router-dom";
 import {type FormEvent, useState} from "react";
 import axios from "axios";
@@ -91,7 +91,7 @@ export default function HomePage() {
             </div>
         </>
     ) : (
-        "You are not authenticated."
+        <p>You are not authenticated.</p>
     );
 
     return (

@@ -1,11 +1,11 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import HomePage from "./lib/home/HomePage.tsx";
-import About from "./about/About.tsx";
-import './App.css';
-import {UserContext} from "./user-context.ts";
+import HomePage from "./features/home/HomePage.tsx";
+import About from "./features/about/About.tsx";
+import '@/styles/components/app.css';
+import {UserContext} from "./store/user-context.ts";
 import {useState} from "react";
-import {User, UserService} from "./lib/auth/user.service.ts";
-import Authentication from "./lib/auth/Authentication.component.tsx";
+import {User, UserService} from "./services/user.service.ts";
+import Authentication from "./features/auth/components/Authentication.tsx";
 
 export default function App() {
     const [user, setUser] = useState(User.ANONYMOUS);

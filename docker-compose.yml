@@ -57,7 +57,6 @@ services:
         condition: service_started
       reactive-resource-server:
         condition: service_started
-    restart: always
 
   mysql-base:
     container_name: bff-database-mysql-container
