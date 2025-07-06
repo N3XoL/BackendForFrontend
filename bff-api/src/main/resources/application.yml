@@ -40,8 +40,8 @@ spring:
           bff-realm:
             provider: bff-realm
             authorization-grant-type: authorization_code
-            client-id: ${KEYCLOAK_ID:bff-realm-confidential}
-            client-secret: ${KEYCLOAK_SECRET:8o8UMAOpFVSXelnEf6F2qiLZlXCnV90x}
+            client-id: ${KEYCLOAK_ID}
+            client-secret: ${KEYCLOAK_SECRET}
             scope: openid, profile, email
             redirect-uri: ${proxy-uri}/bff/login/oauth2/code/{registrationId}
       resourceserver:

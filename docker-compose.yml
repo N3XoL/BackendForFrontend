@@ -14,7 +14,7 @@ services:
       RESOURCE_SERVER_SERVLET_HOST: servlet-resource-server
       RESOURCE_SERVER_REACTIVE_HOST: reactive-resource-server
       KEYCLOAK_ID: bff-realm-confidential
-      KEYCLOAK_SECRET: 8o8UMAOpFVSXelnEf6F2qiLZlXCnV90x
+      KEYCLOAK_SECRET: 46Tn5GXbw7ajTU53Sd6WCYxSaYBvHCeI
 
   frontend:
     container_name: bff-api-frontend
@@ -45,11 +45,13 @@ services:
 
   nginx:
     container_name: nginx-container
-    build: ./nginx
+    image: nginx
     ports:
       - "888:888"
     volumes:
-      - bff-nginx-volume:/var/lib/nginx
+      - ./nginx/404.html:/usr/share/nginx/html/404.html
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d/
     depends_on:
       bff-api:
         condition: service_started
@@ -114,5 +116,4 @@ services:
 volumes:
   bff-mysql-volume:
   bff-keycloak-volume:
-  bff-nginx-volume:
   bff-frontend-volume:

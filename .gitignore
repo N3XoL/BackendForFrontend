@@ -1,0 +1,14 @@
+/.idea/.gitignore
+/.idea/aws.xml
+/.idea/libraries/bff_api_0_0_1_SNAPSHOT.xml
+/.idea/compiler.xml
+/.idea/dataSources.xml
+/.idea/encodings.xml
+/.idea/jarRepositories.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/libraries/reactive_resource_server_0_0_1_SNAPSHOT.xml
+/.idea/libraries/servlet_resource_server_api_0_0_1_SNAPSHOT.xml
+/.idea/sqldialects.xml
+/.idea/vcs.xml
