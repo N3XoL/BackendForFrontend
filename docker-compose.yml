@@ -14,7 +14,7 @@ services:
       RESOURCE_SERVER_SERVLET_HOST: servlet-resource-server
       RESOURCE_SERVER_REACTIVE_HOST: reactive-resource-server
       KEYCLOAK_ID: bff-realm-confidential
-      KEYCLOAK_SECRET: 46Tn5GXbw7ajTU53Sd6WCYxSaYBvHCeI
+      KEYCLOAK_SECRET: C3qrZQFvjxv3SzjHHmCjuFa5eP8IXb0s
 
   frontend:
     container_name: bff-api-frontend
@@ -75,6 +75,7 @@ services:
       retries: 5
     volumes:
       - bff-mysql-volume:/var/lib/mysql
+      - ./db.init:/docker-entrypoint-initdb.d
 
   keycloak:
     container_name: bff-keycloak-container
@@ -89,8 +90,9 @@ services:
       KC_HEALTH_ENABLED: true
       KC_METRICS_ENABLED: true
       KC_HTTP_PORT: 8090
-      KC_HOSTNAME_URL: http://host.docker.internal:888/auth
-      KC_HOSTNAME_ADMIN_URL: http://host.docker.internal:888/auth
+      KC_PROXY_HEADERS: xforwarded
+      KC_HOSTNAME: http://host.docker.internal:888/auth
+      KC_HOSTNAME_ADMIN: http://host.docker.internal:888/auth
       KC_HTTP_RELATIVE_PATH: /auth/
     ports:
       - "8090:8090"
@@ -100,6 +102,7 @@ services:
         condition: service_healthy
     command:
       - start-dev
+      - --import-realm
     healthcheck:
       test: ['CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "
       public class HealthCheck { 
@@ -112,6 +115,7 @@ services:
       retries: 10
     volumes:
       - bff-keycloak-volume:/var/lib/keycloak
+      - ./keycloak-realm/realm-export.json:/opt/keycloak/data/import/realm-export.json
 
 volumes:
   bff-mysql-volume:

@@ -1,5 +1,5 @@
 schema: http
-hostname: host.docker.internal
+hostname: localhost
 proxy-port: 888
 authorization-prefix: /auth
 proxy-uri: ${schema}://${hostname}:${proxy-port}
