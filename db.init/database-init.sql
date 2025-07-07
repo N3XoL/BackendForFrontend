@@ -1,6 +1,6 @@
-create schema if not exists dbreactive;
+create schema if not exists reactivedb;
 
-create table dbreactive.some_entity
+create table reactivedb.some_entity
 (
     id int auto_increment primary key,
     entityKey   varchar(255) null,
