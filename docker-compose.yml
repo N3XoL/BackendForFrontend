@@ -14,7 +14,7 @@ services:
       RESOURCE_SERVER_SERVLET_HOST: servlet-resource-server
       RESOURCE_SERVER_REACTIVE_HOST: reactive-resource-server
       KEYCLOAK_ID: bff-realm-confidential
-      KEYCLOAK_SECRET: uOaJmwpZMW1FeFB9k0QkdQftgrgUsyub
+      KEYCLOAK_SECRET: aUFOu1jMaNPV2xiBTaXUH5zVGbs3jlzy
 
   frontend:
     container_name: bff-api-frontend

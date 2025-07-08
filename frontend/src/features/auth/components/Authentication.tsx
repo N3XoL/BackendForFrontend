@@ -1,5 +1,5 @@
 import Logout from "./Logout.tsx";
-import {useUserContext} from "../../../store/user-context.ts";
+import {useUserContext} from "@/store/user-context.ts";
 import Login from "./Login.tsx";
 
 
