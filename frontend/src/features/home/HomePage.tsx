@@ -42,7 +42,7 @@ export default function HomePage() {
                             <p className="font-medium mb-2">Your roles are:</p>
                             <ul className=" rounded-md p-4">
                                 {currentUser.roles.map((role, index) => (
-                                    <li key={index} className="text-left py-1 text-gray-300">- {role}</li>
+                                    <li key={index} className="text-left py-1 text-gray-300">- {role.substring("ROLE_".length, role.length).toUpperCase()}</li>
                                 ))}
                             </ul>
                         </>
