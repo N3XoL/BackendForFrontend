@@ -110,9 +110,9 @@ services:
           System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() ? 0 : 1); 
         } 
       }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:9000/auth/health/ready']
-      interval: 10s
+      interval: 15s
       timeout: 5s
-      retries: 10
+      retries: 15
     volumes:
       - bff-keycloak-volume:/var/lib/keycloak
       - ./keycloak-realm/realm-export.json:/opt/keycloak/data/import/realm-export.json
