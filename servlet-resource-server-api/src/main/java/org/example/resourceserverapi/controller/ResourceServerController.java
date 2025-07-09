@@ -8,8 +8,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-
 @RestController
 public class ResourceServerController {
 
@@ -17,14 +15,14 @@ public class ResourceServerController {
     public ResponseEntity<UserInfoDto> me(JwtAuthenticationToken authentication) {
         var jwt = (Jwt) authentication.getPrincipal();
         var claims = jwt.getClaims();
+        assert jwt.getExpiresAt() != null;
         return ResponseEntity.ok(new UserInfoDto(
                 (String) claims.get("name"),
                 (String) claims.get("email"),
-                (boolean) claims.get("email_verified"),
                 authentication.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
                         .toList(),
-                Arrays.stream(((String) claims.get("scope")).split(" ")).toList()
+                jwt.getExpiresAt().toEpochMilli()
         ));
     }
 }

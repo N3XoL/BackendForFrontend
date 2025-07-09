@@ -8,7 +8,6 @@ import java.util.List;
 public class UserInfoDto {
     private final String name;
     private final String email;
-    private final boolean isEmailVerified;
     private final List<String> authorities;
-    private final List<String> scopes;
+    private final Long exp;
 }

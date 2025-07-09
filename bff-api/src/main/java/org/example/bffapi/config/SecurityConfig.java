@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .logout(logoutSpec -> logoutSpec
                         .logoutSuccessHandler(oidcLogoutSpec()))
                 .oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec.authenticationSuccessHandler(
-                        new RedirectServerAuthenticationSuccessHandler("http://host.docker.internal:888/react-ui")
+                        new RedirectServerAuthenticationSuccessHandler("http://host.docker.internal:888/react-ui/login-callback.html")
                 ))
                 .oidcLogout(oidcLogoutSpec ->
                         oidcLogoutSpec.backChannel(backChannelLogoutConfigurer -> backChannelLogoutConfigurer
