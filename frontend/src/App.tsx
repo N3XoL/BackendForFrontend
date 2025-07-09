@@ -4,7 +4,7 @@ import About from "./features/about/About.tsx";
 import '@/styles/components/app.css';
 import {UserContext} from "./store/user-context.ts";
 import {useState} from "react";
-import {User, UserService} from "./services/user.service.ts";
+import {User, UserService} from "./services/user-service.ts";
 import Authentication from "./features/auth/components/Authentication.tsx";
 
 export default function App() {
