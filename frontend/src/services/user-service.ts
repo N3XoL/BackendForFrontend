@@ -2,7 +2,7 @@ import {interval, Subscription} from 'rxjs';
 import type {Dispatch, SetStateAction} from "react";
 import axios from "axios";
 
-interface UserinfoDto {
+interface UserInfoDto {
     name: string;
     email: string;
     authorities: string[];
@@ -26,7 +26,8 @@ export class User {
         return !!this.name;
     }
 
-     isAdmin(): boolean {
+
+     get isAdmin(): boolean {
         for (const role of this.roles) {
             if (role === 'ROLE_ADMIN') {
                 return true;
@@ -47,7 +48,7 @@ export class UserService {
 
     async refresh(user: User, setUser: Dispatch<SetStateAction<User>>): Promise<void> {
         this.refreshSub?.unsubscribe();
-        const response = await axios.get<UserinfoDto>('/bff/api/servlet/me');
+        const response = await axios.get<UserInfoDto>('/bff/api/servlet/me');
         if (response.data.name !== user.name ||
             response.data.email !== user.email ||
             (response.data.authorities || []).toString() !== user.roles.toString()) {
@@ -56,7 +57,7 @@ export class UserService {
 
         if (response.data.exp) {
             const now = Date.now();
-            const delay = (1000 * response.data.exp - now) * 0.8;
+            const delay = (response.data.exp - now) * 0.8;
             if (delay > 2000) {
                 this.refreshSub = interval(delay).subscribe(() =>
                     this.refresh(user, setUser)

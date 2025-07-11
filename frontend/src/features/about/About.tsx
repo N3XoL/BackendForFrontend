@@ -1,18 +1,17 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import {Link} from "react-router-dom";
+import {type SetStateAction, useEffect, useState} from "react";
 import '@/styles/components/about.css';
 
 export default function About() {
-    const text = "It's a simple page about something!";
+    const [text, setText] = useState("");
     const [key, setKey] = useState(0);
-
-    const letterDelay = 0.25;
-    const animationDuration = 0.5;
-    const totalDuration = (text.length * letterDelay) + animationDuration;
+    const LETTER_DELAY = 0.15;
+    const ANIMATION_DURATION = 0.5;
+    const totalDuration = (text.length * LETTER_DELAY) + ANIMATION_DURATION;
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setKey(prevKey => prevKey + 1);
+            setKey(prevKey => (prevKey + 1) % 2);
         }, totalDuration * 1000);
 
         return () => clearTimeout(timer);
@@ -23,12 +22,17 @@ export default function About() {
             <span
                 key={`${index}-${key}`}
                 className="wave-letter"
-                style={{ animationDelay: `${index * letterDelay}s` }}
+                style={{animationDelay: `${index * LETTER_DELAY}s`}}
             >
                 {letter === ' ' ? '\u00A0' : letter}
             </span>
         );
     });
+
+    const handleInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setText(event.target.value);
+        setKey(prevKey => (prevKey + 1) % 2);
+    };
 
     return (
         <main className="min-h-screen">
@@ -37,7 +41,15 @@ export default function About() {
                 <Link to="/" className="mt-5">Home</Link>
             </div>
             <div className="flex flex-col items-center justify-between p-24">
-                <p className="wave-text">
+                <label htmlFor="text-input" className="mb-2">Enter text to animate it:</label>
+                <input
+                    id="text-input"
+                    type="text"
+                    value={text}
+                    onChange={handleInputChange}
+                    className="p-2 border rounded-md"
+                />
+                <p className="wave-text mt-5">
                     <strong>{animatedText}</strong>
                 </p>
             </div>

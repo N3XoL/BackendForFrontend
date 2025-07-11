@@ -53,19 +53,18 @@ export default function Login({onLogin}: LoginProperties) {
         fetchLoginOptions().catch(error => console.error("error while fetching login options:", error));
     }, [fetchLoginOptions]);
 
-    const onIframeLoad = useCallback(() => {
-        if (isLoginModalDisplayed) {
-            onLogin({});
-        }
-    }, [onLogin, isLoginModalDisplayed]);
-
     useEffect(() => {
-        const iframe = iframeRef.current;
-        if (iframe) {
-            iframe.addEventListener("load", onIframeLoad);
-            return () => iframe.removeEventListener("load", onIframeLoad);
-        }
-    }, [onIframeLoad]);
+        const handleMessage = (event: MessageEvent) => {
+            if (event.data === 'loginSuccess') {
+                onLogin({});
+                setLoginModalDisplayed(false);
+            }
+        };
+        window.addEventListener('message', handleMessage);
+        return () => {
+            window.removeEventListener('message', handleMessage);
+        };
+    }, [onLogin]);
 
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();

@@ -48,7 +48,7 @@ export default function HomePage() {
                         </>
                     ) : <p className="italic text-gray-400">You don't have any roles.</p>}
                 </div>
-                {currentUser.isAdmin() ? (
+                {currentUser.isAdmin ? (
                     <>
                         <div className="flex-1 flex-col gap-4">
                             <div className="text-2xl font-bold">Create Entity</div>

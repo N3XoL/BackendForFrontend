@@ -14,20 +14,15 @@ export default function App() {
     return (
         <UserContext.Provider value={user}>
             <BrowserRouter basename={basename}>
-                <div className="app-container">
-                    <div className="flex">
-                        <div className="m-auto"></div>
-                        <div className="m-auto"></div>
-                        <div className="m-3"></div>
-                        <div className="mt-2">
-                            <Authentication onLogin={() => userService.refresh(user, setUser)}/>
-                        </div>
+                <div className="flex">
+                    <div className="absolute top-3 right-10 m-3">
+                        <Authentication onLogin={() => userService.refresh(user, setUser)}/>
                     </div>
-                    <Routes>
-                        <Route path="/" element={<HomePage/>}/>
-                        <Route path="/about" element={<About/>}/>
-                    </Routes>
                 </div>
+                <Routes>
+                    <Route path="/" element={<HomePage/>}/>
+                    <Route path="/about" element={<About/>}/>
+                </Routes>
             </BrowserRouter>
         </UserContext.Provider>
     );
