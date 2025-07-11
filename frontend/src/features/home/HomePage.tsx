@@ -47,8 +47,7 @@ export default function HomePage() {
                     )}
                 </div>
                 <div className="mt-6"></div>
-                <div>
-                    {currentUser.isAuthenticated ? (
+                {currentUser.isAuthenticated ? (
                     <>
                         <div className="flex flex-row gap-10">
                             <div className="flex-1 p-6 border-2 rounded-lg shadow-md">
@@ -58,7 +57,8 @@ export default function HomePage() {
                                         <p className="font-medium mb-2">Your roles are:</p>
                                         <ul className=" rounded-md p-4">
                                             {currentUser.roles.map((role, index) => (
-                                                <li key={index} className="text-left py-1 text-gray-300">- {role.substring("ROLE_".length, role.length).toUpperCase()}</li>
+                                                <li key={index}
+                                                    className="text-left py-1 text-gray-300">- {role.substring("ROLE_".length, role.length).toUpperCase()}</li>
                                             ))}
                                         </ul>
                                     </>
@@ -71,7 +71,8 @@ export default function HomePage() {
                                         <div className="flex-1 mt-4 border-2 p-8 rounded shadow-lg w-full max-w-2xl">
                                             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                                                 <div className="text-xl font-semibold mb-4">Enter key:
-                                                    <label htmlFor="entityKey" className="block text-sm font-medium text-white mb-0"/>
+                                                    <label htmlFor="entityKey"
+                                                           className="block text-sm font-medium text-white mb-0"/>
                                                     <input
                                                         type="text"
                                                         id="entityKey"
@@ -81,7 +82,8 @@ export default function HomePage() {
                                                     />
                                                 </div>
                                                 <div className="text-xl font-semibold mb-4">Enter value:
-                                                    <label htmlFor="entityValue" className="block text-sm font-medium text-white mb-0"/>
+                                                    <label htmlFor="entityValue"
+                                                           className="block text-sm font-medium text-white mb-0"/>
                                                     <input
                                                         type="text"
                                                         id="entityValue"
@@ -103,13 +105,13 @@ export default function HomePage() {
                                         </div>
                                     </div>
                                 </>
-                            ) : <p className="italic text-white-900-400">You don't have admin rights to create entity</p>}
+                            ) : <p className="italic text-white-900-400">You don't have admin rights to create
+                                entity</p>}
                         </div>
                     </>
-                    ) : (
+                ) : (
                     <p>You are not authenticated.</p>
-                    )}
-                </div>
+                )}
             </div>
         </main>
     );
