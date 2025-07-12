@@ -8,7 +8,7 @@ export default function Logout() {
                     'X-Post-Logout-Redirect-Uri': window.location.href
                 }
             });
-            window.location.href = response.headers['location'] || '/react-ui';
+            window.location.href = response.request.responseURL || '/react-ui';
         } catch (error) {
             console.error("Error while logging out:", error);
         }
