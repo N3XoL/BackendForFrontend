@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logging in...</title>
+    <link rel="stylesheet" href="./src/styles/index.css"/>
+</head>
+<body>
+<script>
+    if (window.top !== window.self) {
+        window.parent.postMessage("loginSuccess", "http://host.docker.internal:888");
+    } else {
+        window.location.href = sessionStorage.getItem('postLoginRedirectPath');
+        sessionStorage.removeItem('postLoginRedirectPath');
+    }
+</script>
+<h1>Logging in...</h1>
+</body>
+</html>

@@ -68,6 +68,7 @@ export default function Login({onLogin}: LoginProperties) {
 
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
+        sessionStorage.setItem('postLoginRedirectPath', window.location.pathname);
         if (!loginUri) {
             console.log("loginUri is empty, returning.");
             return;

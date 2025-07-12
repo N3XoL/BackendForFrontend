@@ -72,9 +72,16 @@ public class SecurityConfig {
     }
 
     private ServerLogoutSuccessHandler oidcLogoutSpec() {
-        OidcClientInitiatedServerLogoutSuccessHandler handler = new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository);
-        handler.setPostLogoutRedirectUri("{baseUrl}/react-ui");
-        return (exchange, authentication) -> handler.onLogoutSuccess(exchange, authentication)
-                .then(Mono.fromRunnable(() -> exchange.getExchange().getResponse().setStatusCode(HttpStatus.CREATED)));
+        OidcClientInitiatedServerLogoutSuccessHandler defaultHandler = new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository);
+        defaultHandler.setPostLogoutRedirectUri("{baseUrl}/react-ui");
+
+        return (exchange, authentication) -> {
+            String postLogoutRedirectUri = exchange.getExchange().getRequest().getHeaders().getFirst("X-Post-Logout-Redirect-Uri");
+            if (postLogoutRedirectUri != null && !postLogoutRedirectUri.isBlank()) {
+                defaultHandler.setPostLogoutRedirectUri(postLogoutRedirectUri);
+            }
+            return defaultHandler.onLogoutSuccess(exchange, authentication)
+                    .then(Mono.fromRunnable(() -> exchange.getExchange().getResponse().setStatusCode(HttpStatus.CREATED)));
+        };
     }
 }
