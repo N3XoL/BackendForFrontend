@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -16,7 +15,6 @@ import org.springframework.security.web.server.authentication.logout.ServerLogou
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
-import reactor.core.publisher.Mono;
 
 @Configuration
 @RequiredArgsConstructor
@@ -72,16 +70,14 @@ public class SecurityConfig {
     }
 
     private ServerLogoutSuccessHandler oidcLogoutSpec() {
-        OidcClientInitiatedServerLogoutSuccessHandler defaultHandler = new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository);
-        defaultHandler.setPostLogoutRedirectUri("{baseUrl}/react-ui");
-
         return (exchange, authentication) -> {
+            OidcClientInitiatedServerLogoutSuccessHandler handler = new OidcClientInitiatedServerLogoutSuccessHandler(clientRegistrationRepository);
+            handler.setPostLogoutRedirectUri("{baseUrl}/react-ui");
             String postLogoutRedirectUri = exchange.getExchange().getRequest().getHeaders().getFirst("X-Post-Logout-Redirect-Uri");
             if (postLogoutRedirectUri != null && !postLogoutRedirectUri.isBlank()) {
-                defaultHandler.setPostLogoutRedirectUri(postLogoutRedirectUri);
+                handler.setPostLogoutRedirectUri(postLogoutRedirectUri);
             }
-            return defaultHandler.onLogoutSuccess(exchange, authentication)
-                    .then(Mono.fromRunnable(() -> exchange.getExchange().getResponse().setStatusCode(HttpStatus.CREATED)));
+            return handler.onLogoutSuccess(exchange, authentication);
         };
     }
 }

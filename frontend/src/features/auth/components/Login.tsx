@@ -73,7 +73,7 @@ export default function Login({onLogin}: LoginProperties) {
             console.log("loginUri is empty, returning.");
             return;
         }
-        if (+selectedLoginExperience === +LoginExperience.IFRAME &&
+        if (selectedLoginExperience === LoginExperience.IFRAME &&
             iframeRef.current) {
             const iframe = iframeRef.current;
             iframe.src = loginUri;
