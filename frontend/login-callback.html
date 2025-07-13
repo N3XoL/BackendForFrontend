@@ -7,11 +7,11 @@
 </head>
 <body>
 <script>
+    const urlParams = new URLSearchParams(window.location.search);
     if (window.top !== window.self) {
         window.parent.postMessage("loginSuccess", "http://host.docker.internal:888");
     } else {
-        window.location.href = sessionStorage.getItem('postLoginRedirectPath');
-        sessionStorage.removeItem('postLoginRedirectPath');
+        window.location.href = urlParams.get("post_login_redirect_uri");
     }
 </script>
 <h1>Logging in...</h1>

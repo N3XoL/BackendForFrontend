@@ -55,7 +55,7 @@ export default function Login({onLogin}: LoginProperties) {
 
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
-            if (event.data === 'loginSuccess') {
+            if (event.data === 'loginSuccess' && event.origin === window.location.origin) {
                 onLogin({});
                 setLoginModalDisplayed(false);
             }
@@ -68,18 +68,21 @@ export default function Login({onLogin}: LoginProperties) {
 
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        sessionStorage.setItem('postLoginRedirectPath', window.location.pathname);
         if (!loginUri) {
             console.log("loginUri is empty, returning.");
             return;
         }
+
         if (selectedLoginExperience === LoginExperience.IFRAME &&
             iframeRef.current) {
             const iframe = iframeRef.current;
             iframe.src = loginUri;
             setLoginModalDisplayed(true);
         } else {
-            window.location.href = loginUri;
+            const returnUrl = window.location.pathname;
+            window.location.href = loginUri.includes('?')
+                ? `${loginUri}&post_login_redirect_uri=${encodeURIComponent(returnUrl)}`
+                : `${loginUri}?post_login_redirect_uri=${encodeURIComponent(returnUrl)}`;
         }
     }
 
